@@ -317,14 +317,7 @@ export default function App() {
       {/* ── Header ── */}
       <div style={{background:T.surface,borderBottom:`1px solid ${T.border}`,padding:"14px 20px 12px",position:"sticky",top:hasUpdate?46:0,zIndex:50}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:3}}>
-          <div style={{display:"flex",alignItems:"center",gap:8,flex:1,minWidth:0}}
-            onContextMenu={e=>{e.preventDefault();setEditingHeader(true);}}
-            onTouchStart={e=>{const t=setTimeout(()=>setEditingHeader(true),600);e.currentTarget._lp=t;}}
-            onTouchEnd={e=>{clearTimeout(e.currentTarget._lp);}}
-            onTouchMove={e=>{clearTimeout(e.currentTarget._lp);}}
-            onMouseDown={e=>{const t=setTimeout(()=>setEditingHeader(true),600);e.currentTarget._lp=t;}}
-            onMouseUp={e=>{clearTimeout(e.currentTarget._lp);}}
-          >
+          <div style={{display:"flex",alignItems:"center",gap:8,flex:1,minWidth:0}}>
             <span style={{fontSize:18,flexShrink:0}}>
               {editingHeader?<EmojiEdit value={tripIcon} onChange={setTripIcon}/>:<span>{tripIcon}</span>}
             </span>
@@ -334,11 +327,13 @@ export default function App() {
                 :<span style={{display:"block",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{tripTitle}</span>
               }
             </span>
-            {editingHeader&&<button onClick={()=>setEditingHeader(false)} style={{...B,flexShrink:0,background:"#DC2626",border:"none",borderRadius:100,color:"#fff",fontSize:11,fontWeight:700,padding:"5px 12px",whiteSpace:"nowrap",marginLeft:6,boxShadow:"0 2px 8px rgba(220,38,38,0.35)"}}>✓ 編輯完成</button>}
+            {editingHeader
+              ?<button onClick={()=>setEditingHeader(false)} style={{...B,flexShrink:0,background:"#DC2626",border:"none",borderRadius:100,color:"#fff",fontSize:11,fontWeight:700,padding:"5px 12px",whiteSpace:"nowrap",marginLeft:6,boxShadow:"0 2px 8px rgba(220,38,38,0.35)"}}>✓ 編輯完成</button>
+              :<button onClick={()=>setEditingHeader(true)} style={{...B,flexShrink:0,background:T.surfaceAlt,border:`1px solid ${T.border}`,borderRadius:100,color:T.inkMid,fontSize:11,fontWeight:600,padding:"4px 10px",whiteSpace:"nowrap",marginLeft:4}}>✏️ 編輯</button>
+            }
           </div>
           {!editingHeader&&(
             <div style={{display:"flex",gap:5,flexShrink:0,marginLeft:8,alignItems:"center"}}>
-              {/* Save status */}
               <span style={{fontSize:10,color:saveStatus==="saving"?T.inkLight:saveStatus==="saved"?T.green:saveStatus==="error"?"#DC2626":T.inkLight,whiteSpace:"nowrap"}}>
                 {saveStatus==="saving"?"⏳ 儲存中…":saveStatus==="saved"?"✓ 已儲存":saveStatus==="error"?"✗ 失敗":lastEditor?`✓ ${lastEditor}`:""}
               </span>
@@ -353,7 +348,7 @@ export default function App() {
           </div>
           {lastSaved&&!editingHeader&&<span style={{fontSize:10,color:T.inkLight,flexShrink:0,marginLeft:8}}>{fmtTime(lastSaved)}</span>}
         </div>
-        {editingHeader&&<div style={{fontSize:10,color:T.inkLight,marginBottom:10,fontStyle:"italic"}}>長按天數按鈕可編輯名稱及 emoji</div>}
+        {editingHeader&&<div style={{fontSize:10,color:T.inkLight,marginBottom:10,fontStyle:"italic"}}>點擊天數按鈕的名稱或 emoji 可直接編輯</div>}
 
         {/* Day tabs */}
         <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:4}}>
